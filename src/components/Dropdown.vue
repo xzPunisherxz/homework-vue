@@ -1,120 +1,81 @@
 <template>
-	<div class="dropdown" :class='{"dropdown-active": isActive}'>
-		<Input 
-			class="form-input-heading" 
-			:class='{"form-input-heading-active": isActive}'
-			placeholder="Назначить" 
-			readonly
-			@toggle="classToggle"
-			v-click-outside="closeSelect"
-		/>
-		<Select :class='{"dropdown-wrapper-show": isActive}'>
-			<Checkbox 
-				v-for="item in arr" 
-				:text="item" 
-				:key="arr.indexOf(item)" 
-				:id="item"
-			></Checkbox>
-		</Select>
-	</div>
+	<div :class="`dropdown__outer dropdown__toggle-${dropdownType}`" @click="toggle">
+        <div>
+            <div class="dropdown__label input__empty capet-down">
+                <span class="dropdown__toggle-text ">{{ label }}</span>  
+            </div>
+            <ul class="dropdown__toggle-menu">
+                <span v-if="optionsArray">
+                    <li v-for="option in optionsArray" :key="option.name">
+                        <Checkbox :name="option.name" :value="option.value" :label="option.label"></Checkbox>
+                    </li>
+                </span>
+                <span v-else>
+                    <li v-for="user in users" :key="user.id">
+                        <Checkbox :value="user.id" :label="user.username" :isUser="true"></Checkbox>
+                    </li>
+                </span>
+            </ul>
+        </div>
+    </div>
 </template>
 
 <script>
-import vClickOutside from "v-click-outside"
+import Checkbox from "./Checkbox.vue";
 export default {
-	data() {
-		return {
-			isActive: false,
-		}
-	},
-
-	props: {
-		"arr": {
-			type: Array
-		}
-	},
-
-	methods: {
-		classToggle() {
-			this.isActive = !this.isActive
-		},
-
-		closeSelect(evt) {
-			if(evt.target.tagName !== "LABEL" && evt.target.tagName !== "INPUT"){
-				this.isActive = false
-			}
-		}
-	},
-
-	directives: {
-		clickOutside: vClickOutside.directive
-	}
+    data() {
+        return {
+            currentPage: 1
+        };
+    },
+    props: {
+        "label": {
+            type: String,
+            required: true
+        },
+        "dropdownType": {
+            type: String,
+            required: true
+        },
+        "optionsArray": {
+            type: Array
+        },
+        "users": {
+            type: Array
+        }
+    },
+    methods: {
+        toggle: function (e) {
+            const dropdowns = document.querySelectorAll(".dropdown__outer");
+            const dropdown = e.currentTarget;
+            window.onclick = function (e) {
+                if (e.target != dropdown) {
+                    dropdowns.forEach((dropdown) => {
+                        dropdown.children[0].classList.remove("dropdown__toggle");
+                        dropdown.children[0].children[0].classList.remove("input__default");
+                        dropdown.children[0].children[0].classList.remove("capet-up");
+                        dropdown.children[0].children[1].classList.remove("is-active");
+                    });
+                }
+            };
+            const withinBoundaries = e.composedPath().includes(dropdown);
+            if (withinBoundaries) {
+                e.stopPropagation();
+                dropdown.children[0].classList.toggle("dropdown__toggle");
+                dropdown.children[0].children[0].classList.toggle("input__default");
+                dropdown.children[0].children[0].classList.toggle("capet-up");
+                dropdown.children[0].children[1].classList.toggle("is-active");
+            }
+        }
+    },
+    components: { Checkbox }
 }
 </script>
 
 
-<style lang="scss">
-	.dropdown {
-		position: relative;
-		height: 24px;
-		width: 100%;
-
-		&::before {
-			position: absolute;
-			content: "";
-			top: 9px;
-			right: 12px;
-			width: 2px;
-			height: 6px;
-			background-color: $inner-shadow;
-			transform: skew(28deg);
-			z-index: 1;
-		}
-
-		&::after {
-			position: absolute;
-			content: "";
-			top: 9px;
-			right: 8px;
-			width: 2px;
-			height: 6px;
-			background-color: $inner-shadow;
-			transform: skew(-28deg);
-		}
-
-		&-active {
-			&::before {
-				transform: skew(-28deg);
-				top: 9px;
-				right: 12px;
-				z-index: 4;
-			}
-
-			&::after {
-				transform: skew(28deg);
-				top: 9px;
-				right: 8px;
-				z-index: 3;
-			}
-		}
-
-
-		&-heading {
-			position: absolute;
-			top: 0;
-			left: 0;
-			cursor: pointer;
-
-			&:focus {
-				box-shadow: none;
-			}
-
-			&-active {
-				border: 1px solid $primary;
-				box-shadow: none;
-				z-index: 3;
-				padding: 2px 9px;
-			}
-		}
-	}
+<style lang="scss" scoped>
+	 @import '../scss/vars.scss';
+    @import '../scss/_mixins.scss';
+    @import '../scss/components/buttons.scss';
+    @import '../scss/components/task-list.scss';
 </style>

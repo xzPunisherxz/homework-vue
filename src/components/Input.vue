@@ -1,79 +1,38 @@
 <template>
-	<input 
-		class="form-input" 
-		:class="additionalClass"
-		:placeholder="placeholder" 
-		:disabled="disabled" 
-		:readonly="readonly"
-		@click="toggle"
-	>
+	<input :value="value" v-bind="$attrs" v-on="$listeners"/>
 </template>
 
 <script>
 
 export default {
-	props: {
-		"placeholder": {
-			type: String
-		},
-
-		"disabled": {
-			type: Boolean
-		},
-
-		"readonly": {
-			type: Boolean
-		},
-
-		"additionalClass": {
-			type: String
-		}
-	},
-
-	methods: {
-		toggle(){
-			this.$emit("toggle")
-		},
-	}
+    inheritAttrs: false,
+    props: {
+        value: String
+    },
+    computed: {
+        listeners() {
+            var vm = this
+            return Object.assign({},
+            this.$listeners,
+            {
+                input: function (event) {
+                    vm.$emit('input', event.target.value)
+                    }
+                }
+            )
+        }
+    },
+    methods: {
+        onInput(event) {
+            this.$emit('input', event.target.value)
+        }
+    }
 }
 </script>
 
 
-<style lang="scss">
-	.form-input {
-		@include input-style;
-		padding: 3px 10px;
-		margin: 0 0 20px 0;
-		height: 24px;
-		-moz-appearance: textfield;
-
-		&::-webkit-outer-spin-button,
-		&::-webkit-inner-spin-button {
-			-webkit-appearance: none;
-		}
-
-		&:hover,
-		&:focus,
-		&:not(:placeholder-shown) {
-			padding: 2px 9px;
-		}
-
-		&-heading {
-			position: absolute;
-			top: 0;
-			left: 0;
-			cursor: pointer;
-
-			&:focus {
-				box-shadow: none;
-			}
-
-			&-active {
-				border: 1px solid $primary;
-				box-shadow: none;
-				z-index: 3;
-				padding: 2px 9px;
-			}
-		}
-	}
+<style lang="scss" scoped>
+	 @import '../scss/vars.scss';
+	@import '../scss/components/authorization.scss';
+    @import '../scss/components/buttons.scss';
 </style>

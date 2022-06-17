@@ -1,88 +1,41 @@
 <template>
-	<div>
-		<input class="input-checkbox visually-hidden" type="checkbox" :id="id">
-		<label class="input-label" :for="id">{{text}}</label>
-	</div>
+	<label>
+        <input type="checkbox" :class="`checkbox-default ${isUser && 'user'}`" :name="name" :value="value"/> {{ label }}
+    </label>
 </template>
 
 <script>
 	export default {
-		props: {
-			"text": {
-				type: String
-			},
-
-			"id": {
-				type: String
-			}
-		},
+		props: ['name', 'value', 'label', 'isUser']
 	}
 </script>
 
-<style lang="scss">
-	.input {
-		&-label {
-			position: relative;
-			font-family: $input-font;
-			font-size: 14px;
-			line-height: 14px;
-			padding: 7px 5px 7px 32px;
-			display: block;
-			cursor: pointer;
+<style lang="scss" scoped>
+ @import '../scss/vars.scss';
+	input[type="checkbox"] {
+        appearance: none;
+        width: 12.8px;
+        height: 12.8px;
+    }
 
-			&:hover {
-				background-color: $input-item-hover;
-			}
+    .checkbox-default {
+        background-color: $white;
+        border: 1px solid $text-color;
+        border-radius: 5px;
 
-			&::before {
-				position: absolute;
-				content: "";
-				width: 24px;
-				height: 24px;
-				border: 1px solid $text-color;
-				border-radius: 5px;
-				top: 50%;
-				transform: translateY(-50%);
-				left: 5px;
-				background-color: $basic-white;
-			}
+        &:hover {
+            background-color: $white;
+            border: 1px solid $primary;
+            border-radius: 5px;
+        }
 
-			&:hover::before {
-				border-color: $primary;
-			}
-		}
-
-		&-checkbox:checked+&-label {
-			background-color: $primary;
-			color: $default;
-
-			&::before {
-				background-color: $primary;
-				border-color: $default;
-			}
-
-			&::after {
-				position: absolute;
-				// content: "\2169";
-				content: "";
-				width: 12px;
-				height: 13px;
-				font-weight: bold;
-				top: 50%;
-				left: 11px;
-				transform: translateY(-50%);
-				background: url("../assets/images/x.svg") no-repeat;
-			}
-		}
-
-		&-checkbox:disabled+&-label {
-			color: $label-text;
-			background-color: $inner-shadow;
-
-			&::before {
-				background-color: $inner-shadow;
-				border-color: $label-text;
-			}
-		}
+        &:checked {
+            background-color: $primary;
+            border: 1px solid $primary;
+            border-radius: 5px;
+            background: center url("../assets/images/x.svg");
+            background-blend-mode: color-dodge;
+            background-size: cover;
+        }
 	}
 </style>

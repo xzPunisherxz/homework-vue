@@ -1,5 +1,5 @@
 {
-  "name": "fe-school",
+  "name": "task-homework-vue",
   "version": "1.0.0",
   "description": "",
   "author": "",
@@ -58,6 +58,7 @@
     "axios": "^0.18.0",
     "include-media": "^1.4.9",
     "lodash": "^4.17.11",
+    "moment": "^2.29.3",
     "qs": "^6.5.1",
     "v-click-outside": "^2.0.2",
     "vue": "^2.5.9",
