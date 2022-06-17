@@ -7,7 +7,6 @@
 		</div>
 		<div class="dropdown-menu" v-if="isActive">
 			<slot :isActive="isActive"></slot>
-			<!-- <slot name="drop-item"></slot> -->
 		</div>
 	</div>
 </template>

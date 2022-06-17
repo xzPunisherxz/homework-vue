@@ -89,7 +89,6 @@ import api from '@/api'
 import CardHeader from '../components/CardHeader.vue';
 import TaskListItem from '../components/TaskListItem.vue';
 import { mapGetters, mapActions } from 'vuex';
-// import { baseFilter } from '../api/service/events.service';
 import Button from '../components/Button.vue';
 
 export default {

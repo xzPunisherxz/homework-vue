@@ -20,11 +20,6 @@ export default {
 	props: {
 		color: String,
 	},
-	// watch: {
-	// 	storeText(val) {
-	// 		this.setFilters(val)
-	// 	}
-	// },
 	
 	computed: {
 		...mapGetters('app1', ['activeTab', 'filters', 'getCurrentFilter']),
@@ -42,7 +37,6 @@ export default {
 	},
 	mounted() {
 		this.setActiveTab(this.$route.fullPath)
-		// this.storeText = this.getCurrentFilter || null
 	},
 	methods: {
 		...mapActions('app1', ['setActiveTab', 'setFilters']),
